@@ -28,6 +28,18 @@ This repository now includes an Android application that scrapes public Raptoreu
 3. Tap **Start Scan** to launch the web-wide scrape; watch live status messages, then view or save the generated report.
 4. Tap a share icon to post the report text (or the exported PDF, once saved) to Facebook/X/LinkedIn/Reddit.
 
+### Building and testing from Termux
+
+Use the bundled helper script when building directly on an Android device with Termux. It provisions OpenJDK, downloads the Android SDK command-line tools, and runs Gradle tasks for you:
+
+```bash
+bash scripts/termux-setup.sh          # installs toolchain, builds the debug APK, and runs unit tests
+bash scripts/termux-setup.sh --no-build   # installs toolchain only
+bash scripts/termux-setup.sh --skip-tests # builds APK without running Gradle tests
+```
+
+After completion, the debug APK is located at `app/build/outputs/apk/debug/`.
+
 ## What the tool collects
 
 - **Blockchain status**: height, difficulty, peers and network hash rate from a configurable explorer API.
