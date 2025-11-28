@@ -6,8 +6,9 @@ This repository now includes an Android application that scrapes public Raptoreu
 
 **Highlights**
 
-- Open-web scraping of Raptoreum sources: official site, Reddit, X/Twitter, YouTube, CoinGecko, and CoinMarketCap using Jsoup.
-- Live status panel shows scraping progress in real time as pages are fetched and parsed.
+- Open-web scraping across all official and community touchpoints: wallets, docs, explorers, bridges, stores, social feeds (X, Reddit, Facebook, Instagram, LinkedIn), ANN threads, wRTM bridge + contract, GitHub, Medium, CoinGecko, CoinMarketCap, community projects, and more—all with Jsoup and no API keys required.
+- AI-generated insight layer (optional): point the app at a free OpenAI-compatible endpoint to turn raw highlights into a crisp briefing. A local fallback stays active when no endpoint is configured.
+- Reports include pulled Raptoreum logos/graphics and a multi-source narrative. Live status panel shows scraping progress in real time as pages are fetched and parsed.
 - One-tap “View Report” preview plus PDF export to device storage.
 - Shareable via Facebook, X, LinkedIn, Reddit, or a generic target using per-platform icons.
 - Compose UI with Material 3 styling for quick navigation.

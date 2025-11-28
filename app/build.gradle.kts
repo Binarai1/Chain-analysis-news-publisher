@@ -3,6 +3,16 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+val localProps = java.util.Properties().apply {
+    val file = rootDir.resolve("local.properties")
+    if (file.exists()) {
+        file.inputStream().use { load(it) }
+    }
+}
+
+fun propertyOrEnv(key: String): String =
+    (localProps.getProperty(key) ?: System.getenv(key) ?: "").replace("\"", "\\\"")
+
 android {
     namespace = "com.raptoreum.report"
     compileSdk = 34
@@ -13,6 +23,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField("String", "AI_AGENT_URL", "\"${propertyOrEnv("AI_AGENT_URL")}\"")
+        buildConfigField("String", "AI_AGENT_KEY", "\"${propertyOrEnv("AI_AGENT_KEY")}\"")
+        buildConfigField("String", "AI_AGENT_MODEL", "\"${propertyOrEnv("AI_AGENT_MODEL")}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
