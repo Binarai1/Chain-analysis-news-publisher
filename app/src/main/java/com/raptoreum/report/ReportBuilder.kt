@@ -3,12 +3,20 @@ package com.raptoreum.report
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ReportBuilder {
+class ReportBuilder(
+    private val insightAgent: InsightAgent = InsightAgent()
+) {
     fun buildReport(payload: ReportPayload): String {
         val header = """
             Raptoreum Ecosystem Intelligence Report
             Generated: ${payload.metadata.generatedAt}
             Sources scanned: ${payload.metadata.sources.joinToString()}
+        """.trimIndent()
+
+        val aiNarrative = insightAgent.buildNarrative(payload)
+        val aiSection = """
+            AI Insights
+            $aiNarrative
         """.trimIndent()
 
         val body = payload.sections.joinToString("\n\n") { section ->
@@ -28,7 +36,7 @@ class ReportBuilder {
             Tip: Tap the share icons to send this PDF to your favorite channel.
         """.trimIndent()
 
-        return listOf(header, body, footer).joinToString("\n\n")
+        return listOf(header, aiSection, body, footer).joinToString("\n\n")
     }
 
     private fun reportId(): String {

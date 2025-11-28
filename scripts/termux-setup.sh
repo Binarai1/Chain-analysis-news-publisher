@@ -3,14 +3,18 @@ set -euo pipefail
 
 # Termux provisioning script for building the Android app
 # Usage:
-#   bash scripts/termux-setup.sh            # install deps + Android SDK + Gradle wrapper cache
-#   bash scripts/termux-setup.sh --no-build # skip Gradle build step
+#   bash scripts/termux-setup.sh                 # install deps + Android SDK + Gradle wrapper cache + run unit tests
+#   bash scripts/termux-setup.sh --no-build      # skip Gradle build step
+#   bash scripts/termux-setup.sh --skip-tests    # build only; do not execute Gradle tests
 #
 # Safe to re-run; it will reuse existing SDK/tooling when present.
 
 BUILD_APP=1
+RUN_TESTS=1
 if [[ "${1-}" == "--no-build" ]]; then
   BUILD_APP=0
+elif [[ "${1-}" == "--skip-tests" ]]; then
+  RUN_TESTS=0
 fi
 
 # 1) Base packages
@@ -69,6 +73,9 @@ fi
 cd "$HOME/Chain-analysis-news-publisher"
 if [[ $BUILD_APP -eq 1 ]]; then
   ./gradlew --no-daemon assembleDebug
+  if [[ $RUN_TESTS -eq 1 ]]; then
+    ./gradlew --no-daemon testDebugUnitTest
+  fi
 fi
 
 echo "Setup complete. APK will be under app/build/outputs/apk/debug/."

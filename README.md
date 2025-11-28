@@ -6,8 +6,9 @@ This repository now includes an Android application that scrapes public Raptoreu
 
 **Highlights**
 
-- Open-web scraping of Raptoreum sources: official site, Reddit, X/Twitter, YouTube, CoinGecko, and CoinMarketCap using Jsoup.
-- Live status panel shows scraping progress in real time as pages are fetched and parsed.
+- Open-web scraping across all official and community touchpoints: wallets, docs, explorers, bridges, stores, social feeds (X, Reddit, Facebook, Instagram, LinkedIn), ANN threads, wRTM bridge + contract, GitHub, Medium, CoinGecko, CoinMarketCap, community projects, and more—all with Jsoup and no API keys required.
+- AI-generated insight layer (optional): point the app at a free OpenAI-compatible endpoint to turn raw highlights into a crisp briefing. A local fallback stays active when no endpoint is configured.
+- Reports include pulled Raptoreum logos/graphics and a multi-source narrative. Live status panel shows scraping progress in real time as pages are fetched and parsed.
 - One-tap “View Report” preview plus PDF export to device storage.
 - Shareable via Facebook, X, LinkedIn, Reddit, or a generic target using per-platform icons.
 - Compose UI with Material 3 styling for quick navigation.
@@ -27,6 +28,31 @@ This repository now includes an Android application that scrapes public Raptoreu
 2. Use the included Gradle scripts to build and run the `app` module on a device/emulator (Android 8.0+/API 26).
 3. Tap **Start Scan** to launch the web-wide scrape; watch live status messages, then view or save the generated report.
 4. Tap a share icon to post the report text (or the exported PDF, once saved) to Facebook/X/LinkedIn/Reddit.
+
+### AI agent configuration (optional)
+
+To enable the briefing agent, configure a free OpenAI-compatible API endpoint (for example, a self-hosted text-generation-inference or any provider that offers a free tier) in `local.properties` or your environment:
+
+```
+AI_AGENT_URL=https://your-endpoint/v1/chat/completions
+AI_AGENT_KEY=your_public_or_test_key
+# Optional: override the deployed model name
+AI_AGENT_MODEL=gpt-4o-mini
+```
+
+If the values are blank, the app will still build and ship using its offline summarizer.
+
+### Building and testing from Termux
+
+Use the bundled helper script when building directly on an Android device with Termux. It provisions OpenJDK, downloads the Android SDK command-line tools, and runs Gradle tasks for you:
+
+```bash
+bash scripts/termux-setup.sh          # installs toolchain, builds the debug APK, and runs unit tests
+bash scripts/termux-setup.sh --no-build   # installs toolchain only
+bash scripts/termux-setup.sh --skip-tests # builds APK without running Gradle tests
+```
+
+After completion, the debug APK is located at `app/build/outputs/apk/debug/`.
 
 ## What the tool collects
 

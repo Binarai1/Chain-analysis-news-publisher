@@ -2,6 +2,8 @@ package com.raptoreum.report
 
 import android.content.ContentValues
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
@@ -12,8 +14,15 @@ import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.net.URL
 
 class PdfExporter {
+
+    private val logoUrls = listOf(
+        "https://raptoreum.com/wp-content/uploads/2021/10/cropped-Raptoreum-Logo-2048x2048-1.png",
+        "https://raw.githubusercontent.com/Raptor3um/raptoreum/master/doc/assets/raptoreum-logo.png",
+        "https://cryptologos.cc/logos/raptoreum-rtm-logo.png"
+    )
 
     fun export(context: Context, reportText: String): String {
         val pdfDocument = PdfDocument()
@@ -28,7 +37,7 @@ class PdfExporter {
 
         val lines = reportText.split("\n")
         var x = 24f
-        var y = 32f
+        var y = drawBranding(canvas, paint)
         val lineSpacing = 16f
 
         lines.forEach { line ->
@@ -72,5 +81,39 @@ class PdfExporter {
             }
             file.absolutePath
         }
+    }
+
+    private fun drawBranding(
+        canvas: PdfDocument.Page,
+        paint: Paint
+    ): Float {
+        val bitmaps = logoUrls.mapNotNull { fetchBitmap(it) }
+        var yPosition = 32f
+        if (bitmaps.isNotEmpty()) {
+            var xPosition = 24f
+            val maxHeight = bitmaps.maxOf { it.height.coerceAtMost(180) }
+            bitmaps.forEach { bitmap ->
+                val scaled = scaleBitmap(bitmap, maxHeight)
+                canvas.canvas.drawBitmap(scaled, xPosition, yPosition, paint)
+                xPosition += scaled.width + 12
+            }
+            yPosition += maxHeight + 18
+        }
+        return yPosition
+    }
+
+    private fun fetchBitmap(url: String): Bitmap? = runCatching {
+        val connection = URL(url).openConnection()
+        connection.connectTimeout = 8000
+        connection.readTimeout = 8000
+        connection.getInputStream().use { input ->
+            BitmapFactory.decodeStream(input)
+        }
+    }.getOrNull()
+
+    private fun scaleBitmap(bitmap: Bitmap, targetHeight: Int): Bitmap {
+        val ratio = targetHeight.toFloat() / bitmap.height
+        val targetWidth = (bitmap.width * ratio).toInt().coerceAtMost(400)
+        return Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, true)
     }
 }
