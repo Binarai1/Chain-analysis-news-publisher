@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Hard alias to satisfy any remaining references to the Material3 template theme name.
+         Some cached builds on Termux can merge in an older manifest that still points to
+         Theme.Material3.DayNight.NoActionBar; this style ensures the symbol exists and
+         forwards to our AppTheme while marking it as an override to win any resource
+         priority conflicts. -->
+    <style name="Theme.Material3.DayNight.NoActionBar" parent="@style/AppTheme" tools:override="true" />
+</resources>
