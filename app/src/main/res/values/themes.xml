@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Use the stable Material Components DayNight theme to ensure resource linking succeeds
-         in minimal environments (including Termux builds) where Material3 XML styles might not
-         be available from the downloaded dependency set. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar" />
 </resources>
