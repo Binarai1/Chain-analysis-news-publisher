@@ -28,10 +28,6 @@ This repository now includes an Android application that scrapes public Raptoreu
 3. Tap **Start Scan** to launch the web-wide scrape; watch live status messages, then view or save the generated report.
 4. Tap a share icon to post the report text (or the exported PDF, once saved) to Facebook/X/LinkedIn/Reddit.
 
-> **Note:** The repository no longer commits the binary `gradle/wrapper/gradle-wrapper.jar`. When you invoke `./gradlew`, the script now downloads the official wrapper JAR from the Gradle GitHub mirror and verifies its SHA-256 hash before proceeding. This keeps pull requests text-only while still preserving a reproducible wrapper experience.
-
-> **AndroidX is pre-enabled.** The repo ships a `gradle.properties` with `android.useAndroidX=true` and `android.enableJetifier=true` so Compose/AndroidX dependencies resolve cleanly (fixes `:app:checkDebugAarMetadata` failures on fresh machines).
-
 ## What the tool collects
 
 - **Blockchain status**: height, difficulty, peers and network hash rate from a configurable explorer API.
@@ -69,49 +65,3 @@ python -m raptoreum_report.main --max-videos 5
 ```
 
 Each execution writes a Markdown file named `raptoreum-report-YYYY-MM-DD.md` inside `reports/` (or the configured directory). You can schedule the script with cron or a CI workflow to generate the report daily.
-
-## Termux one-shot setup & APK build
-
-On Android with [Termux](https://termux.dev/), run the helper script to provision the full toolchain (OpenJDK, Android SDK command-line tools, and Gradle) and then build the APK:
-
-```bash
-# from the repo root
-bash scripts/termux-setup.sh
-```
-
-What the script does:
-
-- Updates Termux packages and installs OpenJDK 17, Gradle, Python, unzip/zip, curl/wget, and supporting tools.
-- Downloads the Android SDK command-line tools, installs platform-tools, platform **android-34**, and **build-tools 34.0.0**, and auto-accepts licenses.
-- Persists `ANDROID_SDK_ROOT`, `JAVA_HOME`, and PATH entries into `~/.profile` for future sessions.
-- Runs `./gradlew --no-daemon assembleDebug` to emit `app/build/outputs/apk/debug/app-debug.apk`.
-
-You can skip the build step (for offline prep) with `bash scripts/termux-setup.sh --no-build`.
-
-### Gradle download fallback
-
-If the Gradle wrapper cannot fetch its distribution because of network egress limits, you can pre-seed the cache using `curl` a
-nd rerun the build offline:
-
-1. Download the distribution zip referenced in [`gradle/wrapper/gradle-wrapper.properties`](gradle/wrapper/gradle-wrapper.prope
-rties):
-
-   ```bash
-   curl -L -o /tmp/gradle-8.14.3-bin.zip https://services.gradle.org/distributions/gradle-8.14.3-bin.zip
-   ```
-
-2. Create the Gradle wrapper cache directory if it does not exist and place the zip there (replace the hash directory if your e
-nvironment generates a different one):
-
-   ```bash
-   mkdir -p ~/.gradle/wrapper/dists/gradle-8.14.3-bin/cv11ve7ro1n3o1j4so8xd9n66/
-   cp /tmp/gradle-8.14.3-bin.zip ~/.gradle/wrapper/dists/gradle-8.14.3-bin/cv11ve7ro1n3o1j4so8xd9n66/
-   ```
-
-3. Retry the build with the cached distribution (add `--offline` if repository access is blocked):
-
-   ```bash
-   GRADLE_OPTS='-Djava.net.preferIPv4Stack=true' ./gradlew --no-daemon assembleDebug
-   ```
-
-This avoids the wrapper’s initial download and lets you proceed when only limited HTTP clients are allowed.
