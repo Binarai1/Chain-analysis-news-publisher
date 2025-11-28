@@ -29,19 +29,6 @@ This repository now includes an Android application that scrapes public Raptoreu
 3. Tap **Start Scan** to launch the web-wide scrape; watch live status messages, then view or save the generated report.
 4. Tap a share icon to post the report text (or the exported PDF, once saved) to Facebook/X/LinkedIn/Reddit.
 
-### AI agent configuration (optional)
-
-To enable the briefing agent, configure a free OpenAI-compatible API endpoint (for example, a self-hosted text-generation-inference or any provider that offers a free tier) in `local.properties` or your environment:
-
-```
-AI_AGENT_URL=https://your-endpoint/v1/chat/completions
-AI_AGENT_KEY=your_public_or_test_key
-# Optional: override the deployed model name
-AI_AGENT_MODEL=gpt-4o-mini
-```
-
-If the values are blank, the app will still build and ship using its offline summarizer.
-
 ### Building and testing from Termux
 
 Use the bundled helper script when building directly on an Android device with Termux. It provisions OpenJDK, downloads the Android SDK command-line tools, and runs Gradle tasks for you:
