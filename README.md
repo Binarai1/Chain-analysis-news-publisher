@@ -12,6 +12,15 @@ This repository now includes an Android application that scrapes public Raptoreu
 - Shareable via Facebook, X, LinkedIn, Reddit, or a generic target using per-platform icons.
 - Compose UI with Material 3 styling for quick navigation.
 
+## Ideas for game-changing upgrades
+
+- **Hybrid crawler mesh**: pair the on-device scraper with an optional cloud/edge worker that runs the same Jsoup pipelines in parallel, de-duplicates with Bloom filters, and streams interim findings back to the app’s live status window for near–real time coverage of the wider web.
+- **On-device signal scoring**: ship lightweight TensorFlow Lite models to rank posts/videos by reach, engagement velocity, and sentiment, then surface only the top-ranked items in the daily report to keep it concise while still comprehensive.
+- **Evidence preservation**: capture HTML snapshots and lightweight screenshots of scraped pages, bundle them with hashes, and let users tap into a “proof” view in the report so any claim can be verified or rechecked later—even if the source page is edited or deleted.
+- **Change detection & alerts**: track deltas (e.g., follower surges, difficulty jumps, new exchange listings) and trigger user-configurable push notifications when thresholds are crossed; background this work with WorkManager so alerts arrive without opening the app.
+- **Interactive insights**: render small inline charts (price vs. social mentions, hash rate vs. sentiment) using Compose graphics, and let users drill into a timeline view for each signal with filters for exchange, network, and social source.
+- **Offline-first library**: cache all scraped artifacts locally with a compact full-text index so reports stay browsable and searchable offline; sync diffs when connectivity returns to reconcile with the cloud worker’s archive.
+
 **Running the app**
 
 1. Open the project in Android Studio Giraffe or newer.
