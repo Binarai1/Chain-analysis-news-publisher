@@ -1,0 +1,29 @@
+# Build outputs
+/build/
+**/build/
+/.gradle/
+**/.gradle/
+/app/build/
+
+# IDE and tooling
+.idea/
+*.iml
+*.log
+.DS_Store
+.gradle/
+
+# Distribution artifacts
+*.apk
+*.aab
+*.ap_
+*.aar
+# Gradle wrapper runtime (downloaded on demand)
+gradle/wrapper/gradle-wrapper.jar
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+
+# Misc
+local.properties
